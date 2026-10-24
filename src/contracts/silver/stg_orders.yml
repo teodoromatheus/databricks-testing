@@ -1,5 +1,5 @@
 contract:
-  table: medallion_catalog.silver.stg_campaigns
+  table: medallion_catalog.silver.stg_orders
   layer: silver
 
 checks:
