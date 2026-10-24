@@ -1,0 +1,136 @@
+contract:
+  table: medallion_catalog.silver.stg_campaigns
+  layer: silver
+
+checks:
+  - check:
+      arguments:
+        column: order_id
+      function: is_not_null
+    criticality: error
+    name: order_id_is_null
+
+  - check:
+      arguments:
+        columns: 
+          - order_id
+      function: is_unique
+    criticality: error
+    name: order_id_is_not_unique
+
+  - check:
+      arguments:
+        column: customer_id
+      function: is_not_null
+    criticality: error
+    name: customer_id_is_null
+
+  - check:
+      arguments:
+        column: created_at
+      function: is_not_null
+    criticality: error
+    name: created_at_is_null
+
+
+  - check:
+      arguments:
+        column: order_status
+        trim_strings: true
+      function: is_not_null_and_not_empty
+    criticality: error
+    name: order_status_is_null_or_empty
+
+  - check:
+      arguments:
+        allowed:
+        - '''delivered'''
+        - '''processing'''
+        - '''cancelled'''
+        - '''shipped'''
+        column: order_status
+      function: is_in_list
+    criticality: error
+    name: order_status_other_value
+
+  - check:
+      arguments:
+        column: sales_channel
+        trim_strings: true
+      function: is_not_null_and_not_empty
+    criticality: warn
+    name: sales_channel_is_null_or_empty
+
+  - check:
+      arguments:
+        allowed:
+        - '''app'''
+        - '''web'''
+        - '''marketplace'''
+        column: sales_channel
+      function: is_in_list
+    criticality: warn
+    name: sales_channel_other_value
+
+  - check:
+      arguments:
+        column: payment_method
+        trim_strings: true
+      function: is_not_null_and_not_empty
+    criticality: error
+    name: payment_method_is_null_or_empty
+
+  - check:
+      arguments:
+        allowed:
+        - '''credit_card'''
+        - '''gift_card'''
+        - '''apple_pay'''
+        - '''paypal'''
+        - '''debit_card'''
+        column: payment_method
+      function: is_in_list
+    criticality: warn
+    name: payment_method_other_value
+
+  - check:
+      arguments:
+        column: coupon_code
+        trim_strings: true
+      function: is_not_empty
+    criticality: error
+    name: coupon_code_is_not_empty
+
+  - check:
+      arguments:
+        column: shipping_method
+        trim_strings: true
+      function: is_not_null_and_not_empty
+    criticality: error
+    name: shipping_method_is_null_or_empty
+
+  - check:
+      arguments:
+        allowed:
+        - '''standard'''
+        - '''express'''
+        - '''pickup'''
+        column: shipping_method
+      function: is_in_list
+    criticality: error
+    name: shipping_method_other_value
+
+  - check:
+      arguments:
+        column: order_total
+      function: is_not_null
+    criticality: error
+    name: order_total_is_null
+
+  - check:
+      arguments:
+        column: order_total
+        limit: 0
+      function: is_not_less_than
+    criticality: error
+    name: order_total_negative

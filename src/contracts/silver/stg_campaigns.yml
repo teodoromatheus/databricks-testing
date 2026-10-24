@@ -1,0 +1,63 @@
+contract:
+  table: medallion_catalog.silver.stg_campaigns
+  layer: silver
+
+checks:
+  - check:
+      arguments:
+        column: campaign_id
+      function: is_not_null
+    criticality: error
+    name: campaign_id_is_null
+
+  - check:
+      arguments:
+        columns: 
+          - campaign_id
+      function: is_unique
+    criticality: error
+    name: campaign_id_isnt_unique
+
+  - check:
+      arguments:
+        column: campaign_name
+        trim_strings: true
+      function: is_not_null_and_not_empty
+    criticality: warn
+    name: campaign_name_is_null_or_empty
+
+  - check:
+      arguments:
+        column: campaign_channel
+        trim_strings: true
+      function: is_not_null_and_not_empty
+    criticality: warn
+    name: campaign_channel_is_null_or_empty
+
+  - check:
+      arguments:
+        column: campaign_start_date
+      function: is_not_null
+    criticality: error
+    name: campaign_start_date_is_null
+
+  - check:
+      arguments:
+        column: campaign_end_date
+      function: is_not_null
+    criticality: error
+    name: campaign_end_date_is_null
+
+  - check:
+      arguments:
+        column: campaign_budget
+      function: is_not_null
+    criticality: error
+    name: campaign_budget_is_null
+    
+  - check:
+      arguments:
+        column: campaign_actual_spend
+      function: is_not_null
+    criticality: error
+    name: campaign_actual_spend_is_null
